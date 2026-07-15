@@ -161,11 +161,11 @@ function LockScreen({ onUnlock }: { onUnlock: () => void }) {
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-baseline justify-between">
-              <p className="text-[13px] font-semibold">Für Nabila</p>
+              <p className="text-[13px] font-semibold">Für mein kleines baby</p>
               <p className="text-[11px] opacity-70">jetzt</p>
             </div>
             <p className="truncate text-[13px] opacity-95">
-              Ein Geschenk wartet auf dich… entsperre mich 🤍
+              bitte öffnen
             </p>
           </div>
         </div>
@@ -210,7 +210,7 @@ function LockScreen({ onUnlock }: { onUnlock: () => void }) {
           </div>
         </div>
         <p className="mt-3 text-center text-[11px] uppercase tracking-[0.3em] opacity-70">
-          Nabila's iPhone
+          {"\n"}
         </p>
       </div>
 
