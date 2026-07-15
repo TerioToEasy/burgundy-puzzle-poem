@@ -77,16 +77,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Alles Liebe zum Geburtstag, Lebrana" },
+      { title: "Happy Birthday, Nabila" },
       {
         name: "description",
-        content: "Eine interaktive Geburtstagskarte in Burgunderrot für Lebrana.",
+        content: "Eine interaktive Geburtstagskarte für Nabila.",
       },
-      { name: "author", content: "Für Lebrana" },
-      { property: "og:title", content: "Alles Liebe zum Geburtstag, Lebrana" },
+      { name: "author", content: "Für Nabila" },
+      { property: "og:title", content: "Happy Birthday, Nabila" },
       {
         property: "og:description",
-        content: "Eine interaktive Geburtstagskarte in Burgunderrot für Lebrana.",
+        content: "Eine interaktive Geburtstagskarte für Nabila.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
