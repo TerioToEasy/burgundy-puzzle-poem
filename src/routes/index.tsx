@@ -260,7 +260,7 @@ function MathQuiz({ onSolved }: { onSolved: () => void }) {
         >
           <label className="block">
             <span className="mb-2 block text-center font-serif text-2xl italic text-foreground">
-              4 + 8 = ?
+              4 + 8 ={"\u00a0"}
             </span>
             <input
               inputMode="numeric"
