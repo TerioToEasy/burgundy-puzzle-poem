@@ -570,7 +570,13 @@ function FloatingHearts() {
 
 const PHOTO_COUNT = 10;
 
-function Letter({ onPlayVideo }: { onPlayVideo: () => void }) {
+function Letter({
+  onPlayVideo,
+  audioRef,
+}: {
+  onPlayVideo: () => void;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
+}) {
   const page1 = [
     "Mein Herz, heute gehört dieser Tag ganz dir.",
     "Ich liebe dich – mehr als jedes Wort es fassen kann.",
