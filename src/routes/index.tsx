@@ -46,7 +46,9 @@ function Index() {
       {stage === "celebrate" && (
         <Celebration onContinue={() => setStage("letter")} />
       )}
-      {stage === "letter" && <Letter onPlayVideo={() => setStage("video")} />}
+      {stage === "letter" && (
+        <Letter onPlayVideo={() => setStage("video")} audioRef={audioRef} />
+      )}
       {stage === "video" && <FullscreenVideo onEnd={() => setStage("letter")} />}
     </main>
   );
