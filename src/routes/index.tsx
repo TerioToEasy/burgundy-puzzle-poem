@@ -318,34 +318,59 @@ function MathQuiz({ onSolved }: { onSolved: () => void }) {
 
 function Celebration({ onContinue }: { onContinue: () => void }) {
   return (
-    <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center overflow-hidden px-6 py-10 text-center">
+    <div
+      className="relative mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center overflow-hidden px-6 py-10 text-center"
+      style={{
+        background:
+          "radial-gradient(ellipse at 50% 30%, rgba(138,30,44,0.35), transparent 60%), radial-gradient(ellipse at 50% 100%, rgba(90,18,32,0.5), transparent 70%), #0a0405",
+      }}
+    >
+      <FallingPhotos />
+      <FallingHearts />
       <Confetti />
-      <FloatingHearts />
 
       <div className="relative z-10">
         <p
-          className="font-serif text-5xl italic leading-tight text-primary"
-          style={{ animation: "pop 900ms cubic-bezier(0.22,1,0.36,1) both" }}
+          className="text-xs uppercase tracking-[0.5em] text-primary/70"
+          style={{ animation: "fadeIn 800ms both" }}
         >
-          Happy Birthday
+          Heute feiern wir dich
         </p>
         <p
-          className="mt-3 font-serif text-3xl italic text-foreground"
-          style={{ animation: "pop 900ms 300ms cubic-bezier(0.22,1,0.36,1) both" }}
+          className="mt-4 text-6xl font-thin leading-none tracking-tight text-white drop-shadow-[0_4px_20px_rgba(201,74,91,0.6)]"
+          style={{
+            animation: "pop 900ms 200ms cubic-bezier(0.22,1,0.36,1) both",
+            fontFamily: "var(--font-serif)",
+          }}
         >
-          to my baby
+          Happy
         </p>
         <p
-          className="mt-6 text-4xl"
-          style={{ animation: "pop 900ms 600ms cubic-bezier(0.22,1,0.36,1) both" }}
+          className="mt-1 text-7xl italic leading-none tracking-tight text-primary drop-shadow-[0_4px_30px_rgba(201,74,91,0.8)]"
+          style={{
+            animation: "pop 900ms 500ms cubic-bezier(0.22,1,0.36,1) both",
+            fontFamily: "var(--font-serif)",
+          }}
+        >
+          Birthday
+        </p>
+        <p
+          className="mt-4 font-serif text-2xl italic text-white/90"
+          style={{ animation: "pop 900ms 850ms cubic-bezier(0.22,1,0.36,1) both" }}
+        >
+          to my baby ♥
+        </p>
+        <p
+          className="mt-8 text-4xl"
+          style={{ animation: "pop 900ms 1100ms cubic-bezier(0.22,1,0.36,1) both" }}
         >
           🤍🎂🤍
         </p>
 
         <button
           onClick={onContinue}
-          className="mt-12 rounded-full bg-primary px-8 py-3 font-medium text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95"
-          style={{ animation: "fadeIn 800ms 1400ms both" }}
+          className="mt-12 rounded-full bg-primary px-8 py-3 font-medium text-primary-foreground shadow-[0_10px_40px_-10px_rgba(201,74,91,0.9)] transition-transform hover:scale-105 active:scale-95"
+          style={{ animation: "fadeIn 800ms 1600ms both" }}
         >
           Ein Brief für dich →
         </button>
@@ -358,6 +383,112 @@ function Celebration({ onContinue }: { onContinue: () => void }) {
           100% { opacity: 1; transform: scale(1); }
         }
         @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+      `}</style>
+    </div>
+  );
+}
+
+function FallingPhotos() {
+  // Falling polaroids from top to bottom with hearts
+  const items = Array.from({ length: 14 });
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {items.map((_, i) => {
+        const left = (i * 7.3 + 3) % 95;
+        const delay = (i * 0.6) % 7;
+        const duration = 8 + (i % 5) * 1.5;
+        const size = 60 + (i % 4) * 18;
+        const rotate = (i * 47) % 40 - 20;
+        const n = (i % PHOTO_COUNT) + 1;
+        return (
+          <div
+            key={i}
+            className="absolute -top-40"
+            style={{
+              left: `${left}%`,
+              animation: `photoFall ${duration}s ${delay}s linear infinite`,
+              transform: `rotate(${rotate}deg)`,
+            }}
+          >
+            <FallingPolaroid n={n} size={size} />
+          </div>
+        );
+      })}
+      <style>{`
+        @keyframes photoFall {
+          0% { transform: translateY(-20vh) rotate(0deg); opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { transform: translateY(120vh) rotate(360deg); opacity: 0; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function FallingPolaroid({ n, size }: { n: number; size: number }) {
+  const [failed, setFailed] = useState(false);
+  const h = size * 1.2;
+  return (
+    <div
+      className="bg-white p-1.5 shadow-2xl"
+      style={{ width: size + 12 }}
+    >
+      {failed ? (
+        <div
+          className="grid place-items-center text-[9px] uppercase tracking-widest text-primary/80"
+          style={{
+            width: size,
+            height: h,
+            background:
+              "linear-gradient(135deg, rgba(201,74,91,0.35), rgba(60,20,10,0.6))",
+          }}
+        >
+          Foto {n}
+        </div>
+      ) : (
+        <img
+          src={`/photos/${n}.jpg`}
+          alt=""
+          onError={() => setFailed(true)}
+          style={{ width: size, height: h, objectFit: "cover", display: "block" }}
+          loading="lazy"
+        />
+      )}
+    </div>
+  );
+}
+
+function FallingHearts() {
+  const hearts = Array.from({ length: 20 });
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {hearts.map((_, i) => {
+        const left = (i * 5.1 + 1) % 100;
+        const delay = (i * 0.4) % 6;
+        const duration = 6 + (i % 4) * 1.2;
+        const size = 14 + (i % 5) * 8;
+        return (
+          <span
+            key={i}
+            className="absolute -top-10 text-primary"
+            style={{
+              left: `${left}%`,
+              fontSize: size,
+              animation: `heartFall ${duration}s ${delay}s linear infinite`,
+              filter: "drop-shadow(0 0 8px rgba(201,74,91,0.6))",
+            }}
+          >
+            ♥
+          </span>
+        );
+      })}
+      <style>{`
+        @keyframes heartFall {
+          0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+          10% { opacity: 1; }
+          100% { transform: translateY(115vh) rotate(180deg); opacity: 0.6; }
+        }
       `}</style>
     </div>
   );
