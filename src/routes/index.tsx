@@ -691,17 +691,10 @@ function Letter({
         </div>
       </div>
 
-      <div className="mt-10 flex justify-center pb-28">
-        <button
-          onClick={onPlayVideo}
-          className="rounded-full bg-primary px-8 py-4 font-medium text-primary-foreground shadow-xl transition-transform hover:scale-105 active:scale-95"
-        >
-          ▶ press me
-        </button>
-      </div>
+      <PressMeButton onPlayVideo={onPlayVideo} />
 
       {/* Spotify-style vinyl bottom-left */}
-      <VinylWidget />
+      <VinylWidget audioRef={audioRef} />
 
       <style>{`
         @keyframes pageFlip1 {
