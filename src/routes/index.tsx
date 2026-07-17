@@ -688,7 +688,7 @@ function Letter({ onPlayVideo }: { onPlayVideo: () => void }) {
           onClick={onPlayVideo}
           className="rounded-full bg-primary px-8 py-4 font-medium text-primary-foreground shadow-xl transition-transform hover:scale-105 active:scale-95"
         >
-          ▶ Eine Überraschung für dich
+          ▶ press me
         </button>
       </div>
 
