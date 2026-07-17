@@ -819,32 +819,104 @@ function LetterPage({
   );
 }
 
-function VinylWidget() {
+function PressMeButton({ onPlayVideo }: { onPlayVideo: () => void }) {
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = () => {
+    if (loading) return;
+    setLoading(true);
+    setTimeout(() => {
+      onPlayVideo();
+    }, 1400);
+  };
+
   return (
-    <div className="fixed bottom-4 left-4 z-40 flex items-center gap-3 rounded-full border border-white/10 bg-black/70 py-2 pl-2 pr-5 shadow-2xl backdrop-blur-xl">
-      <div className="relative h-12 w-12">
+    <div className="mt-10 flex justify-center pb-28">
+      <button
+        onClick={handleClick}
+        disabled={loading}
+        className="relative overflow-hidden rounded-full bg-primary px-8 py-4 font-medium text-primary-foreground shadow-xl transition-transform hover:scale-105 active:scale-95 disabled:cursor-wait disabled:hover:scale-100"
+      >
+        <span className={loading ? "invisible" : "visible"}>▶ press me</span>
+        {loading && (
+          <span className="absolute inset-0 flex items-center justify-center gap-2">
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/40 border-t-primary-foreground" />
+            <span className="text-sm">lädt…</span>
+          </span>
+        )}
+      </button>
+    </div>
+  );
+}
+
+function VinylWidget({
+  audioRef,
+}: {
+  audioRef: React.RefObject<HTMLAudioElement | null>;
+}) {
+  const [playing, setPlaying] = useState(true);
+  const [volume, setVolume] = useState(0.25);
+
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    const onPlay = () => setPlaying(true);
+    const onPause = () => setPlaying(false);
+    a.addEventListener("play", onPlay);
+    a.addEventListener("pause", onPause);
+    setPlaying(!a.paused);
+    return () => {
+      a.removeEventListener("play", onPlay);
+      a.removeEventListener("pause", onPause);
+    };
+  }, [audioRef]);
+
+  const togglePlay = () => {
+    const a = audioRef.current;
+    if (!a) return;
+    if (a.paused) a.play().catch(() => {});
+    else a.pause();
+  };
+
+  const changeVolume = (v: number) => {
+    setVolume(v);
+    const a = audioRef.current;
+    if (a) a.volume = v;
+  };
+
+  return (
+    <div className="fixed bottom-4 left-4 z-40 flex items-center gap-3 rounded-2xl border border-white/10 bg-black/75 p-2 pr-4 shadow-2xl backdrop-blur-xl">
+      <button
+        onClick={togglePlay}
+        aria-label={playing ? "Pause" : "Play"}
+        className="relative h-12 w-12 shrink-0 rounded-full transition-transform hover:scale-105 active:scale-95"
+      >
         <div
           className="absolute inset-0 rounded-full"
           style={{
             background:
               "repeating-radial-gradient(circle at center, #1a1a1a 0 2px, #050505 2px 4px)",
-            animation: "spin 4s linear infinite",
+            animation: playing ? "spin 4s linear infinite" : "none",
             boxShadow: "0 4px 14px rgba(0,0,0,0.7)",
           }}
         />
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle at center, transparent 0 30%, rgba(255,255,255,0.05) 30% 55%, transparent 55%)",
-            animation: "spin 4s linear infinite",
-          }}
-        />
-        <div className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-[inset_0_0_0_2px_rgba(0,0,0,0.5)]" />
-      </div>
+        <div className="absolute left-1/2 top-1/2 grid h-5 w-5 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground shadow-[inset_0_0_0_2px_rgba(0,0,0,0.5)]">
+          {playing ? "❚❚" : "▶"}
+        </div>
+      </button>
       <div className="min-w-0">
         <p className="truncate text-[13px] font-semibold text-white">ILYSB</p>
         <p className="truncate text-[11px] text-white/60">LANY</p>
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.01}
+          value={volume}
+          onChange={(e) => changeVolume(parseFloat(e.target.value))}
+          aria-label="Lautstärke"
+          className="mt-1 h-1 w-24 cursor-pointer accent-primary"
+        />
       </div>
       <div className="ml-1 flex items-end gap-[2px]" aria-hidden>
         {[0, 1, 2, 3].map((i) => (
@@ -853,7 +925,10 @@ function VinylWidget() {
             className="w-[3px] rounded-sm bg-primary"
             style={{
               height: 10,
-              animation: `eq 900ms ${i * 120}ms ease-in-out infinite alternate`,
+              animation: playing
+                ? `eq 900ms ${i * 120}ms ease-in-out infinite alternate`
+                : "none",
+              opacity: playing ? 1 : 0.3,
             }}
           />
         ))}
