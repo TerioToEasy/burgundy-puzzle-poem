@@ -318,34 +318,59 @@ function MathQuiz({ onSolved }: { onSolved: () => void }) {
 
 function Celebration({ onContinue }: { onContinue: () => void }) {
   return (
-    <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center overflow-hidden px-6 py-10 text-center">
+    <div
+      className="relative mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center overflow-hidden px-6 py-10 text-center"
+      style={{
+        background:
+          "radial-gradient(ellipse at 50% 30%, rgba(138,30,44,0.35), transparent 60%), radial-gradient(ellipse at 50% 100%, rgba(90,18,32,0.5), transparent 70%), #0a0405",
+      }}
+    >
+      <FallingPhotos />
+      <FallingHearts />
       <Confetti />
-      <FloatingHearts />
 
       <div className="relative z-10">
         <p
-          className="font-serif text-5xl italic leading-tight text-primary"
-          style={{ animation: "pop 900ms cubic-bezier(0.22,1,0.36,1) both" }}
+          className="text-xs uppercase tracking-[0.5em] text-primary/70"
+          style={{ animation: "fadeIn 800ms both" }}
         >
-          Happy Birthday
+          Heute feiern wir dich
         </p>
         <p
-          className="mt-3 font-serif text-3xl italic text-foreground"
-          style={{ animation: "pop 900ms 300ms cubic-bezier(0.22,1,0.36,1) both" }}
+          className="mt-4 text-6xl font-thin leading-none tracking-tight text-white drop-shadow-[0_4px_20px_rgba(201,74,91,0.6)]"
+          style={{
+            animation: "pop 900ms 200ms cubic-bezier(0.22,1,0.36,1) both",
+            fontFamily: "var(--font-serif)",
+          }}
         >
-          to my baby
+          Happy
         </p>
         <p
-          className="mt-6 text-4xl"
-          style={{ animation: "pop 900ms 600ms cubic-bezier(0.22,1,0.36,1) both" }}
+          className="mt-1 text-7xl italic leading-none tracking-tight text-primary drop-shadow-[0_4px_30px_rgba(201,74,91,0.8)]"
+          style={{
+            animation: "pop 900ms 500ms cubic-bezier(0.22,1,0.36,1) both",
+            fontFamily: "var(--font-serif)",
+          }}
+        >
+          Birthday
+        </p>
+        <p
+          className="mt-4 font-serif text-2xl italic text-white/90"
+          style={{ animation: "pop 900ms 850ms cubic-bezier(0.22,1,0.36,1) both" }}
+        >
+          to my baby ♥
+        </p>
+        <p
+          className="mt-8 text-4xl"
+          style={{ animation: "pop 900ms 1100ms cubic-bezier(0.22,1,0.36,1) both" }}
         >
           🤍🎂🤍
         </p>
 
         <button
           onClick={onContinue}
-          className="mt-12 rounded-full bg-primary px-8 py-3 font-medium text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95"
-          style={{ animation: "fadeIn 800ms 1400ms both" }}
+          className="mt-12 rounded-full bg-primary px-8 py-3 font-medium text-primary-foreground shadow-[0_10px_40px_-10px_rgba(201,74,91,0.9)] transition-transform hover:scale-105 active:scale-95"
+          style={{ animation: "fadeIn 800ms 1600ms both" }}
         >
           Ein Brief für dich →
         </button>
@@ -358,6 +383,112 @@ function Celebration({ onContinue }: { onContinue: () => void }) {
           100% { opacity: 1; transform: scale(1); }
         }
         @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+      `}</style>
+    </div>
+  );
+}
+
+function FallingPhotos() {
+  // Falling polaroids from top to bottom with hearts
+  const items = Array.from({ length: 14 });
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {items.map((_, i) => {
+        const left = (i * 7.3 + 3) % 95;
+        const delay = (i * 0.6) % 7;
+        const duration = 8 + (i % 5) * 1.5;
+        const size = 60 + (i % 4) * 18;
+        const rotate = (i * 47) % 40 - 20;
+        const n = (i % PHOTO_COUNT) + 1;
+        return (
+          <div
+            key={i}
+            className="absolute -top-40"
+            style={{
+              left: `${left}%`,
+              animation: `photoFall ${duration}s ${delay}s linear infinite`,
+              transform: `rotate(${rotate}deg)`,
+            }}
+          >
+            <FallingPolaroid n={n} size={size} />
+          </div>
+        );
+      })}
+      <style>{`
+        @keyframes photoFall {
+          0% { transform: translateY(-20vh) rotate(0deg); opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { transform: translateY(120vh) rotate(360deg); opacity: 0; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function FallingPolaroid({ n, size }: { n: number; size: number }) {
+  const [failed, setFailed] = useState(false);
+  const h = size * 1.2;
+  return (
+    <div
+      className="bg-white p-1.5 shadow-2xl"
+      style={{ width: size + 12 }}
+    >
+      {failed ? (
+        <div
+          className="grid place-items-center text-[9px] uppercase tracking-widest text-primary/80"
+          style={{
+            width: size,
+            height: h,
+            background:
+              "linear-gradient(135deg, rgba(201,74,91,0.35), rgba(60,20,10,0.6))",
+          }}
+        >
+          Foto {n}
+        </div>
+      ) : (
+        <img
+          src={`/photos/${n}.jpg`}
+          alt=""
+          onError={() => setFailed(true)}
+          style={{ width: size, height: h, objectFit: "cover", display: "block" }}
+          loading="lazy"
+        />
+      )}
+    </div>
+  );
+}
+
+function FallingHearts() {
+  const hearts = Array.from({ length: 20 });
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {hearts.map((_, i) => {
+        const left = (i * 5.1 + 1) % 100;
+        const delay = (i * 0.4) % 6;
+        const duration = 6 + (i % 4) * 1.2;
+        const size = 14 + (i % 5) * 8;
+        return (
+          <span
+            key={i}
+            className="absolute -top-10 text-primary"
+            style={{
+              left: `${left}%`,
+              fontSize: size,
+              animation: `heartFall ${duration}s ${delay}s linear infinite`,
+              filter: "drop-shadow(0 0 8px rgba(201,74,91,0.6))",
+            }}
+          >
+            ♥
+          </span>
+        );
+      })}
+      <style>{`
+        @keyframes heartFall {
+          0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+          10% { opacity: 1; }
+          100% { transform: translateY(115vh) rotate(180deg); opacity: 0.6; }
+        }
       `}</style>
     </div>
   );
@@ -438,7 +569,7 @@ function FloatingHearts() {
 const PHOTO_COUNT = 10;
 
 function Letter({ onPlayVideo }: { onPlayVideo: () => void }) {
-  const letterLines = [
+  const page1 = [
     "Mein Herz, heute gehört dieser Tag ganz dir.",
     "Ich liebe dich – mehr als jedes Wort es fassen kann.",
     "Danke, dass es dich gibt und dass du meins bist.",
@@ -446,6 +577,8 @@ function Letter({ onPlayVideo }: { onPlayVideo: () => void }) {
     "Danke für deine Wärme, die mich zuhause fühlen lässt.",
     "Für jedes stille Wir, für jedes laute Wir.",
     "Für jeden Blick, der alles sagt, ohne ein Wort.",
+  ];
+  const page2 = [
     "Du bist mein Ruhepol, mein Abenteuer, mein Zuhause.",
     "Ich bin so dankbar, an deiner Seite zu wachsen.",
     "Für alles, was war. Für alles, was ist.",
@@ -455,62 +588,102 @@ function Letter({ onPlayVideo }: { onPlayVideo: () => void }) {
     "Für immer dein ♥",
   ];
 
-  const [leftIdx, setLeftIdx] = useState(0);
-  const [rightIdx, setRightIdx] = useState(1);
+  const [page, setPage] = useState<1 | 2>(1);
+  const [flipping, setFlipping] = useState(false);
 
-  useEffect(() => {
-    const t1 = setInterval(() => {
-      setLeftIdx((i) => (i + 2) % PHOTO_COUNT);
-    }, 3800);
-    const t2 = setInterval(() => {
-      setRightIdx((i) => (i + 2) % PHOTO_COUNT);
-    }, 4600);
-    return () => {
-      clearInterval(t1);
-      clearInterval(t2);
-    };
-  }, []);
+  const goNext = () => {
+    if (flipping || page === 2) return;
+    setFlipping(true);
+    setTimeout(() => {
+      setPage(2);
+      setFlipping(false);
+    }, 850);
+  };
+  const goPrev = () => {
+    if (flipping || page === 1) return;
+    setFlipping(true);
+    setTimeout(() => {
+      setPage(1);
+      setFlipping(false);
+    }, 850);
+  };
 
   return (
     <div className="relative mx-auto min-h-screen w-full max-w-md px-4 py-8">
       <FloatingHearts />
 
-      {/* Side photos */}
-      <PhotoFrame side="left" index={leftIdx} />
-      <PhotoFrame side="right" index={rightIdx} />
+      {/* Book */}
+      <div className="relative mx-auto mt-4 max-w-sm" style={{ perspective: "1600px" }}>
+        <div className="relative">
+          {/* Current page */}
+          <LetterPage
+            key={`p${page}`}
+            title={page === 1 ? "Dear my baby," : "… für immer."}
+            lines={page === 1 ? page1 : page2}
+            showStamp={page === 1}
+            showSignature={page === 2}
+          />
 
-      {/* Burnt letter paper */}
-      <div className="relative mx-auto mt-4 max-w-sm">
-        <div className="burnt-paper relative px-6 py-10 sm:px-8">
-          {/* Wax stamp */}
-          <div className="absolute -top-5 right-6 grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-primary to-primary-deep text-primary-foreground shadow-lg" style={{ transform: "rotate(-12deg)" }}>
-            <span className="font-serif text-xl italic">N ♥</span>
-          </div>
-          <div className="absolute -bottom-3 left-8 grid h-12 w-12 place-items-center rounded-full border-2 border-primary/70 text-primary/80 text-[10px] uppercase tracking-widest" style={{ transform: "rotate(8deg)", background: "rgba(255,240,220,0.4)" }}>
-            Par<br />Avion
-          </div>
-
-          <p className="text-center font-serif text-2xl italic text-[#3a1a10]">
-            Dear my baby,
-          </p>
-          <div className="mx-auto mt-3 h-px w-16 bg-[#3a1a10]/40" />
-
-          <div className="mt-6 space-y-3 font-serif text-[15px] leading-relaxed text-[#2a120a]">
-            {letterLines.map((line, i) => (
-              <p
-                key={i}
+          {/* Flipping overlay page */}
+          {flipping && (
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{
+                transformStyle: "preserve-3d",
+                transformOrigin: page === 1 ? "left center" : "right center",
+                animation: `pageFlip${page} 850ms cubic-bezier(0.65,0.05,0.36,1) both`,
+              }}
+            >
+              <div
+                className="absolute inset-0"
+                style={{ backfaceVisibility: "hidden" }}
+              >
+                <LetterPage
+                  title={page === 1 ? "Dear my baby," : "… für immer."}
+                  lines={page === 1 ? page1 : page2}
+                  showStamp={page === 1}
+                  showSignature={page === 2}
+                />
+              </div>
+              <div
+                className="absolute inset-0"
                 style={{
-                  animation: `fadeUp 600ms ${i * 180}ms both cubic-bezier(0.22,1,0.36,1)`,
+                  backfaceVisibility: "hidden",
+                  transform: "rotateY(180deg)",
                 }}
               >
-                {line}
-              </p>
-            ))}
-          </div>
+                <LetterPage
+                  title={page === 1 ? "… für immer." : "Dear my baby,"}
+                  lines={page === 1 ? page2 : page1}
+                  showStamp={page !== 1}
+                  showSignature={page === 1}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Page indicator + nav */}
+        <div className="mt-6 flex items-center justify-between text-xs text-white/70">
+          <button
+            onClick={goPrev}
+            disabled={page === 1 || flipping}
+            className="rounded-full border border-white/20 bg-white/5 px-4 py-2 backdrop-blur transition disabled:opacity-30"
+          >
+            ← zurück
+          </button>
+          <span className="font-serif italic">Seite {page} / 2</span>
+          <button
+            onClick={goNext}
+            disabled={page === 2 || flipping}
+            className="rounded-full border border-primary/40 bg-primary/20 px-4 py-2 backdrop-blur transition disabled:opacity-30"
+          >
+            umblättern →
+          </button>
         </div>
       </div>
 
-      <div className="mt-10 flex justify-center pb-10">
+      <div className="mt-10 flex justify-center pb-28">
         <button
           onClick={onPlayVideo}
           className="rounded-full bg-primary px-8 py-4 font-medium text-primary-foreground shadow-xl transition-transform hover:scale-105 active:scale-95"
@@ -519,26 +692,122 @@ function Letter({ onPlayVideo }: { onPlayVideo: () => void }) {
         </button>
       </div>
 
+      {/* Spotify-style vinyl bottom-left */}
+      <VinylWidget />
+
+      <style>{`
+        @keyframes pageFlip1 {
+          0%   { transform: rotateY(0deg); box-shadow: 0 0 0 rgba(0,0,0,0); }
+          50%  { box-shadow: -30px 20px 60px rgba(0,0,0,0.5); }
+          100% { transform: rotateY(-180deg); }
+        }
+        @keyframes pageFlip2 {
+          0%   { transform: rotateY(-180deg); }
+          50%  { box-shadow: 30px 20px 60px rgba(0,0,0,0.5); }
+          100% { transform: rotateY(0deg); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function LetterPage({
+  title,
+  lines,
+  showStamp,
+  showSignature,
+}: {
+  title: string;
+  lines: string[];
+  showStamp?: boolean;
+  showSignature?: boolean;
+}) {
+  return (
+    <div className="burnt-paper relative px-6 py-10 sm:px-8">
+      {/* Fire/ember glow at edges */}
+      <div className="pointer-events-none absolute inset-0 burnt-edge-glow" />
+
+      {showStamp && (
+        <>
+          <div
+            className="absolute -top-5 right-6 z-10 grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-primary to-primary-deep text-primary-foreground shadow-lg"
+            style={{ transform: "rotate(-12deg)" }}
+          >
+            <span className="font-serif text-xl italic">N ♥</span>
+          </div>
+          <div
+            className="absolute -bottom-3 left-8 z-10 grid h-12 w-12 place-items-center rounded-full border-2 border-primary/70 text-primary/80 text-[10px] uppercase tracking-widest"
+            style={{ transform: "rotate(8deg)", background: "rgba(255,240,220,0.4)" }}
+          >
+            Par<br />Avion
+          </div>
+        </>
+      )}
+
+      <p className="relative text-center font-serif text-2xl italic text-[#3a1a10]">
+        {title}
+      </p>
+      <div className="relative mx-auto mt-3 h-px w-16 bg-[#3a1a10]/40" />
+
+      <div className="relative mt-6 space-y-3 font-serif text-[15px] leading-relaxed text-[#2a120a]">
+        {lines.map((line, i) => (
+          <p
+            key={i}
+            style={{
+              animation: `fadeUp 600ms ${i * 160}ms both cubic-bezier(0.22,1,0.36,1)`,
+            }}
+          >
+            {line}
+          </p>
+        ))}
+        {showSignature && (
+          <p
+            className="pt-4 text-right font-serif text-xl italic text-[#3a1a10]"
+            style={{ animation: `fadeUp 800ms ${lines.length * 160 + 200}ms both` }}
+          >
+            dein Herz ♥
+          </p>
+        )}
+      </div>
+
       <style>{`
         .burnt-paper {
+          position: relative;
           background:
-            radial-gradient(ellipse at 20% 10%, rgba(120,60,20,0.35), transparent 40%),
-            radial-gradient(ellipse at 80% 90%, rgba(80,30,10,0.4), transparent 45%),
-            radial-gradient(ellipse at 100% 30%, rgba(60,20,5,0.35), transparent 40%),
+            radial-gradient(ellipse at 10% 5%, rgba(20,0,0,0.7), transparent 25%),
+            radial-gradient(ellipse at 95% 8%, rgba(30,5,0,0.7), transparent 22%),
+            radial-gradient(ellipse at 5% 95%, rgba(20,0,0,0.75), transparent 28%),
+            radial-gradient(ellipse at 92% 96%, rgba(30,5,0,0.7), transparent 25%),
+            radial-gradient(ellipse at 20% 10%, rgba(120,60,20,0.4), transparent 40%),
+            radial-gradient(ellipse at 80% 90%, rgba(80,30,10,0.5), transparent 45%),
+            radial-gradient(ellipse at 100% 30%, rgba(60,20,5,0.4), transparent 40%),
             linear-gradient(180deg, #f6e4c4 0%, #ecd3a8 50%, #e0bd85 100%);
-          border-radius: 6px;
+          border-radius: 4px;
           box-shadow:
-            0 30px 80px -20px rgba(0,0,0,0.7),
-            inset 0 0 60px rgba(80,30,10,0.3);
-          filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+            0 30px 80px -20px rgba(0,0,0,0.8),
+            inset 0 0 80px rgba(80,30,10,0.5),
+            inset 0 0 20px rgba(20,5,0,0.4);
           clip-path: polygon(
-            2% 1%, 8% 0%, 15% 2%, 24% 0%, 33% 3%, 42% 1%, 55% 0%, 68% 2%,
-            78% 0%, 88% 2%, 96% 0%, 100% 5%, 98% 12%, 100% 22%, 97% 32%,
-            100% 44%, 98% 58%, 100% 70%, 97% 82%, 100% 92%, 95% 100%,
-            85% 98%, 74% 100%, 62% 97%, 50% 100%, 38% 98%, 26% 100%,
-            15% 97%, 6% 100%, 0% 94%, 2% 82%, 0% 68%, 3% 54%, 0% 40%,
-            2% 26%, 0% 14%, 3% 6%
+            1% 3%, 4% 0%, 9% 2%, 14% 0%, 21% 3%, 28% 1%, 36% 0%, 44% 2%,
+            52% 0%, 60% 3%, 68% 0%, 76% 2%, 84% 0%, 91% 3%, 96% 1%, 100% 4%,
+            98% 10%, 100% 18%, 97% 26%, 100% 36%, 98% 46%, 100% 56%,
+            97% 66%, 100% 76%, 98% 86%, 100% 94%, 96% 100%,
+            88% 97%, 80% 100%, 70% 98%, 60% 100%, 50% 97%, 40% 100%,
+            30% 98%, 20% 100%, 10% 97%, 4% 100%, 0% 96%,
+            2% 88%, 0% 78%, 3% 68%, 0% 58%, 2% 48%, 0% 38%,
+            3% 28%, 0% 18%, 2% 10%
           );
+        }
+        .burnt-edge-glow {
+          box-shadow:
+            inset 0 0 30px 4px rgba(180,60,20,0.35),
+            inset 0 0 60px 10px rgba(60,15,0,0.55);
+          border-radius: 4px;
+          animation: emberPulse 3.5s ease-in-out infinite;
+        }
+        @keyframes emberPulse {
+          0%, 100% { opacity: 0.85; }
+          50% { opacity: 1; }
         }
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(10px); }
@@ -549,85 +818,50 @@ function Letter({ onPlayVideo }: { onPlayVideo: () => void }) {
   );
 }
 
-function PhotoFrame({ side, index }: { side: "left" | "right"; index: number }) {
-  // Show 2 stacked frames per side, top-ish and bottom-ish
+function VinylWidget() {
   return (
-    <>
-      <div
-        className="pointer-events-none absolute z-0 hidden sm:block"
-        style={{
-          top: side === "left" ? "8%" : "22%",
-          [side === "left" ? "left" : "right"]: "-40px",
-          transform: `rotate(${side === "left" ? -6 : 5}deg)`,
-        }}
-      >
-        <PhotoCard index={index} />
-      </div>
-      <div
-        className="pointer-events-none absolute z-0 hidden sm:block"
-        style={{
-          bottom: side === "left" ? "18%" : "8%",
-          [side === "left" ? "left" : "right"]: "-32px",
-          transform: `rotate(${side === "left" ? 4 : -7}deg)`,
-        }}
-      >
-        <PhotoCard index={(index + 5) % PHOTO_COUNT} />
-      </div>
-
-      {/* Mobile: single small frame at top */}
-      <div
-        className="pointer-events-none absolute z-0 sm:hidden"
-        style={{
-          top: side === "left" ? "1.5rem" : "6rem",
-          [side === "left" ? "left" : "right"]: "-10px",
-          transform: `rotate(${side === "left" ? -8 : 6}deg)`,
-        }}
-      >
-        <PhotoCard index={index} small />
-      </div>
-    </>
-  );
-}
-
-function PhotoCard({ index, small = false }: { index: number; small?: boolean }) {
-  const [failed, setFailed] = useState(false);
-  const n = index + 1;
-  const w = small ? 72 : 110;
-  const h = small ? 90 : 140;
-  return (
-    <div
-      key={n}
-      className="relative bg-white p-2 shadow-2xl"
-      style={{
-        width: w + 16,
-        animation: "photoFade 600ms both",
-      }}
-    >
-      {failed ? (
+    <div className="fixed bottom-4 left-4 z-40 flex items-center gap-3 rounded-full border border-white/10 bg-black/70 py-2 pl-2 pr-5 shadow-2xl backdrop-blur-xl">
+      <div className="relative h-12 w-12">
         <div
-          className="grid place-items-center text-[10px] uppercase tracking-widest text-primary/80"
+          className="absolute inset-0 rounded-full"
           style={{
-            width: w,
-            height: h,
             background:
-              "linear-gradient(135deg, hsl(var(--primary-glow)/0.4), rgba(60,20,10,0.6))",
+              "repeating-radial-gradient(circle at center, #1a1a1a 0 2px, #050505 2px 4px)",
+            animation: "spin 4s linear infinite",
+            boxShadow: "0 4px 14px rgba(0,0,0,0.7)",
           }}
-        >
-          Foto {n}
-        </div>
-      ) : (
-        <img
-          src={`/photos/${n}.jpg`}
-          alt={`Wir ${n}`}
-          onError={() => setFailed(true)}
-          style={{ width: w, height: h, objectFit: "cover", display: "block" }}
-          loading="lazy"
         />
-      )}
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at center, transparent 0 30%, rgba(255,255,255,0.05) 30% 55%, transparent 55%)",
+            animation: "spin 4s linear infinite",
+          }}
+        />
+        <div className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-[inset_0_0_0_2px_rgba(0,0,0,0.5)]" />
+      </div>
+      <div className="min-w-0">
+        <p className="truncate text-[13px] font-semibold text-white">ILYSB</p>
+        <p className="truncate text-[11px] text-white/60">LANY</p>
+      </div>
+      <div className="ml-1 flex items-end gap-[2px]" aria-hidden>
+        {[0, 1, 2, 3].map((i) => (
+          <span
+            key={i}
+            className="w-[3px] rounded-sm bg-primary"
+            style={{
+              height: 10,
+              animation: `eq 900ms ${i * 120}ms ease-in-out infinite alternate`,
+            }}
+          />
+        ))}
+      </div>
       <style>{`
-        @keyframes photoFade {
-          from { opacity: 0; transform: scale(0.9); }
-          to { opacity: 1; transform: scale(1); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes eq {
+          from { height: 4px; opacity: 0.6; }
+          to   { height: 16px; opacity: 1; }
         }
       `}</style>
     </div>
