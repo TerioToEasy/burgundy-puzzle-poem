@@ -748,22 +748,8 @@ function LetterPage({
       {/* Fire/ember glow at edges */}
       <div className="pointer-events-none absolute inset-0 burnt-edge-glow" />
 
-      {showStamp && (
-        <>
-          <div
-            className="absolute -top-5 right-6 z-10 grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-primary to-primary-deep text-primary-foreground shadow-lg"
-            style={{ transform: "rotate(-12deg)" }}
-          >
-            <span className="font-serif text-xl italic">N ♥</span>
-          </div>
-          <div
-            className="absolute -bottom-3 left-8 z-10 grid h-12 w-12 place-items-center rounded-full border-2 border-primary/70 text-primary/80 text-[10px] uppercase tracking-widest"
-            style={{ transform: "rotate(8deg)", background: "rgba(255,240,220,0.4)" }}
-          >
-            Par<br />Avion
-          </div>
-        </>
-      )}
+      {/* stamps removed for a cleaner modern look */}
+
 
       <p className="relative text-center font-serif text-2xl italic text-[#3a1a10]">
         {title}
