@@ -1,0 +1,46 @@
+# Deploy this TanStack Start app to Cloudflare Pages.
+#
+# This workflow is a template. To enable it:
+#   1. Add your Cloudflare credentials as GitHub secrets:
+#      - CLOUDFLARE_API_TOKEN   (Permissions: Account > Cloudflare Pages > Edit)
+#      - CLOUDFLARE_ACCOUNT_ID  (Your Cloudflare account ID)
+#   2. Create a Cloudflare Pages project with the same name as CLOUDFLARE_PAGES_NAME below.
+#   3. Uncomment the "Deploy to Cloudflare Pages" step.
+#
+# For other platforms (Vercel, Netlify, etc.) use their official GitHub Actions.
+
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      CLOUDFLARE_PAGES_NAME: happy-birthday-nabila
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build
+        run: bun run build
+
+      # - name: Deploy to Cloudflare Pages
+      #   uses: cloudflare/pages-action@v1
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      #     projectName: ${{ env.CLOUDFLARE_PAGES_NAME }}
+      #     directory: .output/public
