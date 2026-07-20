@@ -744,77 +744,80 @@ function LetterPage({
   showSignature?: boolean;
 }) {
   return (
-    <div className="burnt-paper relative px-6 py-10 sm:px-8">
-      {/* Fire/ember glow at edges */}
-      <div className="pointer-events-none absolute inset-0 burnt-edge-glow" />
+    <div className="modern-paper-wrap relative">
+      <div className="modern-paper relative px-7 py-12 sm:px-10">
+        <div className="pointer-events-none absolute inset-0 modern-paper-sheen" />
 
-      {/* stamps removed for a cleaner modern look */}
+        <p className="relative text-center font-serif text-2xl italic text-[#1a1a1a]">
+          {title}
+        </p>
+        <div className="relative mx-auto mt-3 h-px w-16 bg-[#1a1a1a]/25" />
 
-
-      <p className="relative text-center font-serif text-2xl italic text-[#3a1a10]">
-        {title}
-      </p>
-      <div className="relative mx-auto mt-3 h-px w-16 bg-[#3a1a10]/40" />
-
-      <div className="relative mt-6 space-y-3 font-serif text-[15px] leading-relaxed text-[#2a120a]">
-        {lines.map((line, i) => (
-          <p
-            key={i}
-            style={{
-              animation: `fadeUp 600ms ${i * 160}ms both cubic-bezier(0.22,1,0.36,1)`,
-            }}
-          >
-            {line}
-          </p>
-        ))}
-        {showSignature && (
-          <p
-            className="pt-4 text-right font-serif text-xl italic text-[#3a1a10]"
-            style={{ animation: `fadeUp 800ms ${lines.length * 160 + 200}ms both` }}
-          >
-            dein Herz ♥
-          </p>
-        )}
+        <div className="relative mt-6 space-y-3 font-serif text-[15px] leading-relaxed text-[#232323]">
+          {lines.map((line, i) => (
+            <p
+              key={i}
+              style={{
+                animation: `fadeUp 600ms ${i * 160}ms both cubic-bezier(0.22,1,0.36,1)`,
+              }}
+            >
+              {line}
+            </p>
+          ))}
+          {showSignature && (
+            <p
+              className="pt-4 text-right font-serif text-xl italic text-[#1a1a1a]"
+              style={{ animation: `fadeUp 800ms ${lines.length * 160 + 200}ms both` }}
+            >
+              dein Herz ♥
+            </p>
+          )}
+        </div>
       </div>
 
       <style>{`
-        .burnt-paper {
-          position: relative;
+        .modern-paper-wrap {
+          transform: perspective(1400px) rotateX(4deg) rotateY(-2deg);
+          transform-style: preserve-3d;
+          filter: drop-shadow(0 40px 60px rgba(0,0,0,0.55));
+        }
+        .modern-paper-wrap::before,
+        .modern-paper-wrap::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 18px;
+          background: linear-gradient(180deg, #fafaf7, #ececec);
+          box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+          z-index: -1;
+        }
+        .modern-paper-wrap::before {
+          transform: translate(6px, 10px) rotate(1.2deg);
+          opacity: 0.85;
+        }
+        .modern-paper-wrap::after {
+          transform: translate(-5px, 14px) rotate(-1.4deg);
+          opacity: 0.7;
+        }
+        .modern-paper {
           background:
-            radial-gradient(ellipse at 10% 5%, rgba(20,0,0,0.7), transparent 25%),
-            radial-gradient(ellipse at 95% 8%, rgba(30,5,0,0.7), transparent 22%),
-            radial-gradient(ellipse at 5% 95%, rgba(20,0,0,0.75), transparent 28%),
-            radial-gradient(ellipse at 92% 96%, rgba(30,5,0,0.7), transparent 25%),
-            radial-gradient(ellipse at 20% 10%, rgba(120,60,20,0.4), transparent 40%),
-            radial-gradient(ellipse at 80% 90%, rgba(80,30,10,0.5), transparent 45%),
-            radial-gradient(ellipse at 100% 30%, rgba(60,20,5,0.4), transparent 40%),
-            linear-gradient(180deg, #f6e4c4 0%, #ecd3a8 50%, #e0bd85 100%);
-          border-radius: 4px;
+            radial-gradient(ellipse at 20% 10%, rgba(255,255,255,0.9), transparent 55%),
+            radial-gradient(ellipse at 85% 90%, rgba(0,0,0,0.06), transparent 60%),
+            linear-gradient(180deg, #fdfcf9 0%, #f4f1ea 100%);
+          border-radius: 18px;
+          border: 1px solid rgba(0,0,0,0.06);
           box-shadow:
-            0 30px 80px -20px rgba(0,0,0,0.8),
-            inset 0 0 80px rgba(80,30,10,0.5),
-            inset 0 0 20px rgba(20,5,0,0.4);
-          clip-path: polygon(
-            1% 3%, 4% 0%, 9% 2%, 14% 0%, 21% 3%, 28% 1%, 36% 0%, 44% 2%,
-            52% 0%, 60% 3%, 68% 0%, 76% 2%, 84% 0%, 91% 3%, 96% 1%, 100% 4%,
-            98% 10%, 100% 18%, 97% 26%, 100% 36%, 98% 46%, 100% 56%,
-            97% 66%, 100% 76%, 98% 86%, 100% 94%, 96% 100%,
-            88% 97%, 80% 100%, 70% 98%, 60% 100%, 50% 97%, 40% 100%,
-            30% 98%, 20% 100%, 10% 97%, 4% 100%, 0% 96%,
-            2% 88%, 0% 78%, 3% 68%, 0% 58%, 2% 48%, 0% 38%,
-            3% 28%, 0% 18%, 2% 10%
-          );
+            inset 0 1px 0 rgba(255,255,255,0.9),
+            inset 0 -1px 0 rgba(0,0,0,0.06),
+            0 30px 60px -30px rgba(0,0,0,0.5),
+            0 10px 30px -15px rgba(0,0,0,0.4);
         }
-        .burnt-edge-glow {
-          box-shadow:
-            inset 0 0 30px 4px rgba(180,60,20,0.35),
-            inset 0 0 60px 10px rgba(60,15,0,0.55);
-          border-radius: 4px;
-          animation: emberPulse 3.5s ease-in-out infinite;
-        }
-        @keyframes emberPulse {
-          0%, 100% { opacity: 0.85; }
-          50% { opacity: 1; }
+        .modern-paper-sheen {
+          background:
+            linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+          border-radius: 18px;
+          mix-blend-mode: soft-light;
+          opacity: 0.9;
         }
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(10px); }
@@ -824,6 +827,7 @@ function LetterPage({
     </div>
   );
 }
+
 
 function PressMeButton({ onPlayVideo }: { onPlayVideo: () => void }) {
   const [loading, setLoading] = useState(false);
