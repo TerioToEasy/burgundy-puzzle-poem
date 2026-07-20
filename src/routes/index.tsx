@@ -155,9 +155,10 @@ function LockScreen({ onUnlock }: { onUnlock: () => void }) {
 
       <div className="flex-1" />
 
-      {/* Notification card */}
-      <div className="relative z-10 mb-8 w-full rounded-2xl bg-white/15 px-4 py-3 backdrop-blur-xl">
-        <div className="flex items-start gap-3">
+      {/* Notification card — Liquid Glass */}
+      <div className="liquid-glass relative z-10 mb-8 w-full rounded-2xl px-4 py-3">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-2xl bg-gradient-to-b from-white/25 to-transparent" />
+        <div className="relative flex items-start gap-3">
           <div className="grid h-8 w-8 place-items-center rounded-md bg-primary text-lg">
             ♥
           </div>
@@ -173,18 +174,21 @@ function LockScreen({ onUnlock }: { onUnlock: () => void }) {
         </div>
       </div>
 
-      {/* Slide to unlock */}
+      {/* Slide to unlock — Liquid Glass */}
       <div className="relative z-10 w-full pb-6">
         <div
           ref={trackRef}
-          className="relative h-16 w-full overflow-hidden rounded-full border border-white/20 bg-white/10 backdrop-blur-xl"
+          className="liquid-glass relative h-16 w-full overflow-hidden rounded-full"
         >
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-full bg-gradient-to-b from-white/40 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 rounded-b-full bg-gradient-to-t from-white/10 to-transparent" />
+
           <div
             className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm font-medium"
             style={{
               opacity: 1 - Math.min(1, x / 80),
               background:
-                "linear-gradient(90deg, rgba(255,255,255,0.4), rgba(255,255,255,0.9), rgba(255,255,255,0.4))",
+                "linear-gradient(90deg, rgba(255,255,255,0.35), rgba(255,255,255,0.95), rgba(255,255,255,0.35))",
               WebkitBackgroundClip: "text",
               backgroundClip: "text",
               color: "transparent",
@@ -200,7 +204,7 @@ function LockScreen({ onUnlock }: { onUnlock: () => void }) {
             aria-valuenow={0}
             onMouseDown={(e) => startDrag(e.clientX)}
             onTouchStart={(e) => startDrag(e.touches[0].clientX)}
-            className="absolute top-1/2 flex h-14 w-14 -translate-y-1/2 cursor-grab items-center justify-center rounded-full bg-white text-black shadow-lg active:cursor-grabbing"
+            className="liquid-knob absolute top-1/2 flex h-14 w-14 -translate-y-1/2 cursor-grab items-center justify-center rounded-full active:cursor-grabbing"
             style={{
               left: 4 + x,
               transition: dragging ? "none" : "left 300ms ease",
@@ -211,15 +215,31 @@ function LockScreen({ onUnlock }: { onUnlock: () => void }) {
             </svg>
           </div>
         </div>
-        <p className="mt-3 text-center text-[11px] uppercase tracking-[0.3em] opacity-70">
-          {"\n"}
-        </p>
       </div>
 
       <style>{`
         @keyframes shimmer {
           0% { background-position: -200px 0; }
           100% { background-position: 200px 0; }
+        }
+        .liquid-glass {
+          background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
+          backdrop-filter: blur(30px) saturate(180%);
+          border: 1px solid rgba(255,255,255,0.35);
+          box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.5),
+            inset 0 -1px 0 rgba(255,255,255,0.1),
+            0 10px 30px rgba(0,0,0,0.35);
+        }
+        .liquid-knob {
+          background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.6));
+          backdrop-filter: blur(20px) saturate(200%);
+          border: 1px solid rgba(255,255,255,0.7);
+          box-shadow:
+            inset 0 1px 2px rgba(255,255,255,0.9),
+            inset 0 -2px 4px rgba(0,0,0,0.15),
+            0 6px 20px rgba(0,0,0,0.35);
+          color: rgba(0,0,0,0.8);
         }
       `}</style>
     </div>
