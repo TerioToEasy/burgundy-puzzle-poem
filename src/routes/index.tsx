@@ -864,95 +864,39 @@ function VinylWidget({
 }: {
   audioRef: React.RefObject<HTMLAudioElement | null>;
 }) {
-  const [playing, setPlaying] = useState(true);
-  const [volume, setVolume] = useState(0.25);
-
+  // Autoplay-only, no controls. Just a spinning vinyl label.
   useEffect(() => {
     const a = audioRef.current;
-    if (!a) return;
-    const onPlay = () => setPlaying(true);
-    const onPause = () => setPlaying(false);
-    a.addEventListener("play", onPlay);
-    a.addEventListener("pause", onPause);
-    setPlaying(!a.paused);
-    return () => {
-      a.removeEventListener("play", onPlay);
-      a.removeEventListener("pause", onPause);
-    };
+    if (a) {
+      a.volume = 0.25;
+      a.play().catch(() => {});
+    }
   }, [audioRef]);
 
-  const togglePlay = () => {
-    const a = audioRef.current;
-    if (!a) return;
-    if (a.paused) a.play().catch(() => {});
-    else a.pause();
-  };
-
-  const changeVolume = (v: number) => {
-    setVolume(v);
-    const a = audioRef.current;
-    if (a) a.volume = v;
-  };
-
   return (
-    <div className="fixed bottom-4 left-4 z-40 flex items-center gap-3 rounded-2xl border border-white/10 bg-black/75 p-2 pr-4 shadow-2xl backdrop-blur-xl">
-      <button
-        onClick={togglePlay}
-        aria-label={playing ? "Pause" : "Play"}
-        className="relative h-12 w-12 shrink-0 rounded-full transition-transform hover:scale-105 active:scale-95"
-      >
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background:
-              "repeating-radial-gradient(circle at center, #1a1a1a 0 2px, #050505 2px 4px)",
-            animation: playing ? "spin 4s linear infinite" : "none",
-            boxShadow: "0 4px 14px rgba(0,0,0,0.7)",
-          }}
-        />
-        <div className="absolute left-1/2 top-1/2 grid h-5 w-5 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground shadow-[inset_0_0_0_2px_rgba(0,0,0,0.5)]">
-          {playing ? "❚❚" : "▶"}
-        </div>
-      </button>
-      <div className="min-w-0">
-        <p className="truncate text-[13px] font-semibold text-white">ILYSB</p>
-        <p className="truncate text-[11px] text-white/60">LANY</p>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
-          value={volume}
-          onChange={(e) => changeVolume(parseFloat(e.target.value))}
-          aria-label="Lautstärke"
-          className="mt-1 h-1 w-24 cursor-pointer accent-primary"
-        />
+    <div className="pointer-events-none fixed bottom-5 right-5 z-40 flex items-center gap-3">
+      <div className="flex flex-col items-end">
+        <p className="text-[12px] font-semibold text-white/90 drop-shadow">ILYSB</p>
+        <p className="text-[10px] text-white/60 drop-shadow">LANY</p>
       </div>
-      <div className="ml-1 flex items-end gap-[2px]" aria-hidden>
-        {[0, 1, 2, 3].map((i) => (
-          <span
-            key={i}
-            className="w-[3px] rounded-sm bg-primary"
-            style={{
-              height: 10,
-              animation: playing
-                ? `eq 900ms ${i * 120}ms ease-in-out infinite alternate`
-                : "none",
-              opacity: playing ? 1 : 0.3,
-            }}
-          />
-        ))}
+      <div
+        className="relative h-14 w-14 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
+        aria-hidden
+        style={{
+          background:
+            "repeating-radial-gradient(circle at center, #1a1a1a 0 2px, #050505 2px 4px)",
+          animation: "spin 4s linear infinite",
+        }}
+      >
+        <div className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-[inset_0_0_0_2px_rgba(0,0,0,0.5)]" />
       </div>
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes eq {
-          from { height: 4px; opacity: 0.6; }
-          to   { height: 16px; opacity: 1; }
-        }
       `}</style>
     </div>
   );
 }
+
 
 /* ---------------- 5. Fullscreen video ---------------- */
 
