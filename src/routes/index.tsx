@@ -155,9 +155,10 @@ function LockScreen({ onUnlock }: { onUnlock: () => void }) {
 
       <div className="flex-1" />
 
-      {/* Notification card */}
-      <div className="relative z-10 mb-8 w-full rounded-2xl bg-white/15 px-4 py-3 backdrop-blur-xl">
-        <div className="flex items-start gap-3">
+      {/* Notification card — Liquid Glass */}
+      <div className="liquid-glass relative z-10 mb-8 w-full rounded-2xl px-4 py-3">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-2xl bg-gradient-to-b from-white/25 to-transparent" />
+        <div className="relative flex items-start gap-3">
           <div className="grid h-8 w-8 place-items-center rounded-md bg-primary text-lg">
             ♥
           </div>
@@ -173,18 +174,21 @@ function LockScreen({ onUnlock }: { onUnlock: () => void }) {
         </div>
       </div>
 
-      {/* Slide to unlock */}
+      {/* Slide to unlock — Liquid Glass */}
       <div className="relative z-10 w-full pb-6">
         <div
           ref={trackRef}
-          className="relative h-16 w-full overflow-hidden rounded-full border border-white/20 bg-white/10 backdrop-blur-xl"
+          className="liquid-glass relative h-16 w-full overflow-hidden rounded-full"
         >
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-full bg-gradient-to-b from-white/40 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 rounded-b-full bg-gradient-to-t from-white/10 to-transparent" />
+
           <div
             className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm font-medium"
             style={{
               opacity: 1 - Math.min(1, x / 80),
               background:
-                "linear-gradient(90deg, rgba(255,255,255,0.4), rgba(255,255,255,0.9), rgba(255,255,255,0.4))",
+                "linear-gradient(90deg, rgba(255,255,255,0.35), rgba(255,255,255,0.95), rgba(255,255,255,0.35))",
               WebkitBackgroundClip: "text",
               backgroundClip: "text",
               color: "transparent",
@@ -200,7 +204,7 @@ function LockScreen({ onUnlock }: { onUnlock: () => void }) {
             aria-valuenow={0}
             onMouseDown={(e) => startDrag(e.clientX)}
             onTouchStart={(e) => startDrag(e.touches[0].clientX)}
-            className="absolute top-1/2 flex h-14 w-14 -translate-y-1/2 cursor-grab items-center justify-center rounded-full bg-white text-black shadow-lg active:cursor-grabbing"
+            className="liquid-knob absolute top-1/2 flex h-14 w-14 -translate-y-1/2 cursor-grab items-center justify-center rounded-full active:cursor-grabbing"
             style={{
               left: 4 + x,
               transition: dragging ? "none" : "left 300ms ease",
@@ -211,15 +215,31 @@ function LockScreen({ onUnlock }: { onUnlock: () => void }) {
             </svg>
           </div>
         </div>
-        <p className="mt-3 text-center text-[11px] uppercase tracking-[0.3em] opacity-70">
-          {"\n"}
-        </p>
       </div>
 
       <style>{`
         @keyframes shimmer {
           0% { background-position: -200px 0; }
           100% { background-position: 200px 0; }
+        }
+        .liquid-glass {
+          background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
+          backdrop-filter: blur(30px) saturate(180%);
+          border: 1px solid rgba(255,255,255,0.35);
+          box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.5),
+            inset 0 -1px 0 rgba(255,255,255,0.1),
+            0 10px 30px rgba(0,0,0,0.35);
+        }
+        .liquid-knob {
+          background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.6));
+          backdrop-filter: blur(20px) saturate(200%);
+          border: 1px solid rgba(255,255,255,0.7);
+          box-shadow:
+            inset 0 1px 2px rgba(255,255,255,0.9),
+            inset 0 -2px 4px rgba(0,0,0,0.15),
+            0 6px 20px rgba(0,0,0,0.35);
+          color: rgba(0,0,0,0.8);
         }
       `}</style>
     </div>
@@ -724,91 +744,80 @@ function LetterPage({
   showSignature?: boolean;
 }) {
   return (
-    <div className="burnt-paper relative px-6 py-10 sm:px-8">
-      {/* Fire/ember glow at edges */}
-      <div className="pointer-events-none absolute inset-0 burnt-edge-glow" />
+    <div className="modern-paper-wrap relative">
+      <div className="modern-paper relative px-7 py-12 sm:px-10">
+        <div className="pointer-events-none absolute inset-0 modern-paper-sheen" />
 
-      {showStamp && (
-        <>
-          <div
-            className="absolute -top-5 right-6 z-10 grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-primary to-primary-deep text-primary-foreground shadow-lg"
-            style={{ transform: "rotate(-12deg)" }}
-          >
-            <span className="font-serif text-xl italic">N ♥</span>
-          </div>
-          <div
-            className="absolute -bottom-3 left-8 z-10 grid h-12 w-12 place-items-center rounded-full border-2 border-primary/70 text-primary/80 text-[10px] uppercase tracking-widest"
-            style={{ transform: "rotate(8deg)", background: "rgba(255,240,220,0.4)" }}
-          >
-            Par<br />Avion
-          </div>
-        </>
-      )}
+        <p className="relative text-center font-serif text-2xl italic text-[#1a1a1a]">
+          {title}
+        </p>
+        <div className="relative mx-auto mt-3 h-px w-16 bg-[#1a1a1a]/25" />
 
-      <p className="relative text-center font-serif text-2xl italic text-[#3a1a10]">
-        {title}
-      </p>
-      <div className="relative mx-auto mt-3 h-px w-16 bg-[#3a1a10]/40" />
-
-      <div className="relative mt-6 space-y-3 font-serif text-[15px] leading-relaxed text-[#2a120a]">
-        {lines.map((line, i) => (
-          <p
-            key={i}
-            style={{
-              animation: `fadeUp 600ms ${i * 160}ms both cubic-bezier(0.22,1,0.36,1)`,
-            }}
-          >
-            {line}
-          </p>
-        ))}
-        {showSignature && (
-          <p
-            className="pt-4 text-right font-serif text-xl italic text-[#3a1a10]"
-            style={{ animation: `fadeUp 800ms ${lines.length * 160 + 200}ms both` }}
-          >
-            dein Herz ♥
-          </p>
-        )}
+        <div className="relative mt-6 space-y-3 font-serif text-[15px] leading-relaxed text-[#232323]">
+          {lines.map((line, i) => (
+            <p
+              key={i}
+              style={{
+                animation: `fadeUp 600ms ${i * 160}ms both cubic-bezier(0.22,1,0.36,1)`,
+              }}
+            >
+              {line}
+            </p>
+          ))}
+          {showSignature && (
+            <p
+              className="pt-4 text-right font-serif text-xl italic text-[#1a1a1a]"
+              style={{ animation: `fadeUp 800ms ${lines.length * 160 + 200}ms both` }}
+            >
+              dein Herz ♥
+            </p>
+          )}
+        </div>
       </div>
 
       <style>{`
-        .burnt-paper {
-          position: relative;
+        .modern-paper-wrap {
+          transform: perspective(1400px) rotateX(4deg) rotateY(-2deg);
+          transform-style: preserve-3d;
+          filter: drop-shadow(0 40px 60px rgba(0,0,0,0.55));
+        }
+        .modern-paper-wrap::before,
+        .modern-paper-wrap::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 18px;
+          background: linear-gradient(180deg, #fafaf7, #ececec);
+          box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+          z-index: -1;
+        }
+        .modern-paper-wrap::before {
+          transform: translate(6px, 10px) rotate(1.2deg);
+          opacity: 0.85;
+        }
+        .modern-paper-wrap::after {
+          transform: translate(-5px, 14px) rotate(-1.4deg);
+          opacity: 0.7;
+        }
+        .modern-paper {
           background:
-            radial-gradient(ellipse at 10% 5%, rgba(20,0,0,0.7), transparent 25%),
-            radial-gradient(ellipse at 95% 8%, rgba(30,5,0,0.7), transparent 22%),
-            radial-gradient(ellipse at 5% 95%, rgba(20,0,0,0.75), transparent 28%),
-            radial-gradient(ellipse at 92% 96%, rgba(30,5,0,0.7), transparent 25%),
-            radial-gradient(ellipse at 20% 10%, rgba(120,60,20,0.4), transparent 40%),
-            radial-gradient(ellipse at 80% 90%, rgba(80,30,10,0.5), transparent 45%),
-            radial-gradient(ellipse at 100% 30%, rgba(60,20,5,0.4), transparent 40%),
-            linear-gradient(180deg, #f6e4c4 0%, #ecd3a8 50%, #e0bd85 100%);
-          border-radius: 4px;
+            radial-gradient(ellipse at 20% 10%, rgba(255,255,255,0.9), transparent 55%),
+            radial-gradient(ellipse at 85% 90%, rgba(0,0,0,0.06), transparent 60%),
+            linear-gradient(180deg, #fdfcf9 0%, #f4f1ea 100%);
+          border-radius: 18px;
+          border: 1px solid rgba(0,0,0,0.06);
           box-shadow:
-            0 30px 80px -20px rgba(0,0,0,0.8),
-            inset 0 0 80px rgba(80,30,10,0.5),
-            inset 0 0 20px rgba(20,5,0,0.4);
-          clip-path: polygon(
-            1% 3%, 4% 0%, 9% 2%, 14% 0%, 21% 3%, 28% 1%, 36% 0%, 44% 2%,
-            52% 0%, 60% 3%, 68% 0%, 76% 2%, 84% 0%, 91% 3%, 96% 1%, 100% 4%,
-            98% 10%, 100% 18%, 97% 26%, 100% 36%, 98% 46%, 100% 56%,
-            97% 66%, 100% 76%, 98% 86%, 100% 94%, 96% 100%,
-            88% 97%, 80% 100%, 70% 98%, 60% 100%, 50% 97%, 40% 100%,
-            30% 98%, 20% 100%, 10% 97%, 4% 100%, 0% 96%,
-            2% 88%, 0% 78%, 3% 68%, 0% 58%, 2% 48%, 0% 38%,
-            3% 28%, 0% 18%, 2% 10%
-          );
+            inset 0 1px 0 rgba(255,255,255,0.9),
+            inset 0 -1px 0 rgba(0,0,0,0.06),
+            0 30px 60px -30px rgba(0,0,0,0.5),
+            0 10px 30px -15px rgba(0,0,0,0.4);
         }
-        .burnt-edge-glow {
-          box-shadow:
-            inset 0 0 30px 4px rgba(180,60,20,0.35),
-            inset 0 0 60px 10px rgba(60,15,0,0.55);
-          border-radius: 4px;
-          animation: emberPulse 3.5s ease-in-out infinite;
-        }
-        @keyframes emberPulse {
-          0%, 100% { opacity: 0.85; }
-          50% { opacity: 1; }
+        .modern-paper-sheen {
+          background:
+            linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+          border-radius: 18px;
+          mix-blend-mode: soft-light;
+          opacity: 0.9;
         }
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(10px); }
@@ -818,6 +827,7 @@ function LetterPage({
     </div>
   );
 }
+
 
 function PressMeButton({ onPlayVideo }: { onPlayVideo: () => void }) {
   const [loading, setLoading] = useState(false);
@@ -854,95 +864,39 @@ function VinylWidget({
 }: {
   audioRef: React.RefObject<HTMLAudioElement | null>;
 }) {
-  const [playing, setPlaying] = useState(true);
-  const [volume, setVolume] = useState(0.25);
-
+  // Autoplay-only, no controls. Just a spinning vinyl label.
   useEffect(() => {
     const a = audioRef.current;
-    if (!a) return;
-    const onPlay = () => setPlaying(true);
-    const onPause = () => setPlaying(false);
-    a.addEventListener("play", onPlay);
-    a.addEventListener("pause", onPause);
-    setPlaying(!a.paused);
-    return () => {
-      a.removeEventListener("play", onPlay);
-      a.removeEventListener("pause", onPause);
-    };
+    if (a) {
+      a.volume = 0.25;
+      a.play().catch(() => {});
+    }
   }, [audioRef]);
 
-  const togglePlay = () => {
-    const a = audioRef.current;
-    if (!a) return;
-    if (a.paused) a.play().catch(() => {});
-    else a.pause();
-  };
-
-  const changeVolume = (v: number) => {
-    setVolume(v);
-    const a = audioRef.current;
-    if (a) a.volume = v;
-  };
-
   return (
-    <div className="fixed bottom-4 left-4 z-40 flex items-center gap-3 rounded-2xl border border-white/10 bg-black/75 p-2 pr-4 shadow-2xl backdrop-blur-xl">
-      <button
-        onClick={togglePlay}
-        aria-label={playing ? "Pause" : "Play"}
-        className="relative h-12 w-12 shrink-0 rounded-full transition-transform hover:scale-105 active:scale-95"
-      >
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background:
-              "repeating-radial-gradient(circle at center, #1a1a1a 0 2px, #050505 2px 4px)",
-            animation: playing ? "spin 4s linear infinite" : "none",
-            boxShadow: "0 4px 14px rgba(0,0,0,0.7)",
-          }}
-        />
-        <div className="absolute left-1/2 top-1/2 grid h-5 w-5 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground shadow-[inset_0_0_0_2px_rgba(0,0,0,0.5)]">
-          {playing ? "❚❚" : "▶"}
-        </div>
-      </button>
-      <div className="min-w-0">
-        <p className="truncate text-[13px] font-semibold text-white">ILYSB</p>
-        <p className="truncate text-[11px] text-white/60">LANY</p>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
-          value={volume}
-          onChange={(e) => changeVolume(parseFloat(e.target.value))}
-          aria-label="Lautstärke"
-          className="mt-1 h-1 w-24 cursor-pointer accent-primary"
-        />
+    <div className="pointer-events-none fixed bottom-5 right-5 z-40 flex items-center gap-3">
+      <div className="flex flex-col items-end">
+        <p className="text-[12px] font-semibold text-white/90 drop-shadow">ILYSB</p>
+        <p className="text-[10px] text-white/60 drop-shadow">LANY</p>
       </div>
-      <div className="ml-1 flex items-end gap-[2px]" aria-hidden>
-        {[0, 1, 2, 3].map((i) => (
-          <span
-            key={i}
-            className="w-[3px] rounded-sm bg-primary"
-            style={{
-              height: 10,
-              animation: playing
-                ? `eq 900ms ${i * 120}ms ease-in-out infinite alternate`
-                : "none",
-              opacity: playing ? 1 : 0.3,
-            }}
-          />
-        ))}
+      <div
+        className="relative h-14 w-14 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
+        aria-hidden
+        style={{
+          background:
+            "repeating-radial-gradient(circle at center, #1a1a1a 0 2px, #050505 2px 4px)",
+          animation: "spin 4s linear infinite",
+        }}
+      >
+        <div className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-[inset_0_0_0_2px_rgba(0,0,0,0.5)]" />
       </div>
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes eq {
-          from { height: 4px; opacity: 0.6; }
-          to   { height: 16px; opacity: 1; }
-        }
       `}</style>
     </div>
   );
 }
+
 
 /* ---------------- 5. Fullscreen video ---------------- */
 
