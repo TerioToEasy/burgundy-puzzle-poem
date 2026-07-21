@@ -751,7 +751,6 @@ function Letter({
 function LetterPage({
   title,
   lines,
-  showStamp,
   showSignature,
 }: {
   title: string;
