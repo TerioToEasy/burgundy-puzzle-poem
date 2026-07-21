@@ -26,7 +26,7 @@ function Index() {
     if (stage === "celebrate" || stage === "letter") {
       const a = audioRef.current;
       if (a) {
-        a.volume = 0.25;
+        a.volume = 0.12;
         a.play().catch(() => {});
       }
     }
