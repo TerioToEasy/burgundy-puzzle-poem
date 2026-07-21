@@ -756,7 +756,6 @@ function LetterPage({
 }: {
   title: string;
   lines: string[];
-  showStamp?: boolean;
   showSignature?: boolean;
 }) {
   return (
@@ -769,7 +768,7 @@ function LetterPage({
         </p>
         <div className="relative mx-auto mt-3 h-px w-16 bg-[#1a1a1a]/25" />
 
-        <div className="relative mt-6 space-y-3 font-serif text-[15px] leading-relaxed text-[#232323]">
+        <div className="relative mt-6 space-y-4 font-serif text-[15px] leading-relaxed text-[#232323]">
           {lines.map((line, i) => (
             <p
               key={i}
@@ -785,7 +784,7 @@ function LetterPage({
               className="pt-4 text-right font-serif text-xl italic text-[#1a1a1a]"
               style={{ animation: `fadeUp 800ms ${lines.length * 160 + 200}ms both` }}
             >
-              dein Herz ♥
+              dein toby ❤️
             </p>
           )}
         </div>
