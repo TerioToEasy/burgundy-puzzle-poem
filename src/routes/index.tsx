@@ -350,10 +350,10 @@ function Celebration({ onContinue }: { onContinue: () => void }) {
 
       <div className="relative z-10">
         <p
-          className="text-xs uppercase tracking-[0.5em] text-primary/70"
+          className="text-2xl font-medium tracking-widest text-white drop-shadow-[0_2px_10px_rgba(201,74,91,0.6)]"
           style={{ animation: "fadeIn 800ms both" }}
         >
-          Heute feiern wir dich
+          25.07.2026❤️
         </p>
         <p
           className="mt-4 text-6xl font-thin leading-none tracking-tight text-white drop-shadow-[0_4px_20px_rgba(201,74,91,0.6)]"
