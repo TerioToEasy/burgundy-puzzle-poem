@@ -270,11 +270,8 @@ function MathQuiz({ onSolved }: { onSolved: () => void }) {
           Verifizierung
         </p>
         <h1 className="mt-3 text-center font-serif text-3xl italic text-foreground">
-          Bist du wirklich Lala?
+          bist du wirklich mein kleines baby🤔
         </h1>
-        <p className="mt-2 text-center text-sm text-muted-foreground">
-          {"\n"}
-        </p>
 
         <form
           onSubmit={submit}
