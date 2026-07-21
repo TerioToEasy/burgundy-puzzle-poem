@@ -603,23 +603,23 @@ function Letter({
       ],
     },
     {
-      title: "unsere zeit ~",
+      title: "ILYSB",
       paragraphs: [
         "auch wenn wir uns erst fast 1 jahr kennen, fühlt es sich an als kennen wir uns schon unser halbes leben lang, wo warst du denn all die zeit heaaa? 🤔",
         "auch wenn wir uns das immer wieder gegeneinander sagen: ich bin so dankbar dich zu haben, ich bin dankbar das deine eltern dich so gut erzogen haben, ich bin dankbar das du durch deine eigenen erfahrungen dich so zu der person weiterentwickelt hast die du jetzt bist.",
       ],
     },
     {
-      title: "und noch mehr dank ~",
+      title: "DYKILY",
       paragraphs: [
         "ich bin dankbar das du eines halloween gedacht hast: ich möchte feiern gehen! 🎉",
         "und ich bin dankbar das du meine lucu Freundin (eigentlich Frau 😤) geworden bist.",
         "lass dich heute von allen menschen feiern, denn du hast es dir verdient! 🎂",
-        "heute ist dein tag, und ich werde ihn auch die nächsten 70 jahre an deiner seite feiern.",
+        "heute ist dein tag, und ich werde ihn auch die nächsten 70 jahre an deiner seite feiern. ❤️",
       ],
     },
     {
-      title: "für immer ~",
+      title: "👫🏾",
       paragraphs: [
         "falling in love with you was the easiest thing i've ever done ~",
         "Ich liebe dich, aku cinta kamu, 愛してます",
