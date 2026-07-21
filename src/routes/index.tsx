@@ -26,7 +26,7 @@ function Index() {
     if (stage === "celebrate" || stage === "letter") {
       const a = audioRef.current;
       if (a) {
-        a.volume = 0.25;
+        a.volume = 0.12;
         a.play().catch(() => {});
       }
     }
@@ -270,11 +270,8 @@ function MathQuiz({ onSolved }: { onSolved: () => void }) {
           Verifizierung
         </p>
         <h1 className="mt-3 text-center font-serif text-3xl italic text-foreground">
-          Bist du wirklich Lala?
+          bist du wirklich mein kleines baby🤔
         </h1>
-        <p className="mt-2 text-center text-sm text-muted-foreground">
-          {"\n"}
-        </p>
 
         <form
           onSubmit={submit}
@@ -353,10 +350,10 @@ function Celebration({ onContinue }: { onContinue: () => void }) {
 
       <div className="relative z-10">
         <p
-          className="text-xs uppercase tracking-[0.5em] text-primary/70"
+          className="text-2xl font-medium tracking-widest text-white drop-shadow-[0_2px_10px_rgba(201,74,91,0.6)]"
           style={{ animation: "fadeIn 800ms both" }}
         >
-          Heute feiern wir dich
+          25.07.2026❤️
         </p>
         <p
           className="mt-4 text-6xl font-thin leading-none tracking-tight text-white drop-shadow-[0_4px_20px_rgba(201,74,91,0.6)]"
@@ -588,7 +585,7 @@ function FloatingHearts() {
 
 /* ---------------- 4. Burnt Letter ---------------- */
 
-const PHOTO_COUNT = 10;
+const PHOTO_COUNT = 20;
 
 function Letter({
   onPlayVideo,
@@ -597,94 +594,111 @@ function Letter({
   onPlayVideo: () => void;
   audioRef: React.RefObject<HTMLAudioElement | null>;
 }) {
-  const page1 = [
-    "Mein Herz, heute gehört dieser Tag ganz dir.",
-    "Ich liebe dich – mehr als jedes Wort es fassen kann.",
-    "Danke, dass es dich gibt und dass du meins bist.",
-    "Danke für dein Lachen, das jeden Tag heller macht.",
-    "Danke für deine Wärme, die mich zuhause fühlen lässt.",
-    "Für jedes stille Wir, für jedes laute Wir.",
-    "Für jeden Blick, der alles sagt, ohne ein Wort.",
-  ];
-  const page2 = [
-    "Du bist mein Ruhepol, mein Abenteuer, mein Zuhause.",
-    "Ich bin so dankbar, an deiner Seite zu wachsen.",
-    "Für alles, was war. Für alles, was ist.",
-    "Und für alles, was noch kommen wird – mit dir.",
-    "Du bist das Schönste, was mir passieren konnte.",
-    "Happy Birthday, baby. Heute feiern wir dich.",
-    "Für immer dein ♥",
+  const pages: { title: string; paragraphs: string[]; signature?: boolean }[] = [
+    {
+      title: "dear my kleines streber baby 👶🏾",
+      paragraphs: [
+        "hehehe damit hast du bestimmt nicht gerechnet oder?? 🫵🏻 hat es dir gefallen?? bist du überascht?? ich hoffe mein kleines projekt hat dir gefallen 😌",
+        "Jetzt guck dich an woww du bist nun 25 jahre alt!! 👵🏼 du hast deine schwierigsten tage hinter dir und nun hast du weitere 70+ jahre zeit um die schönsten dinge auf der welt zu erleben (natürlich jetzt mit mir hehe 😌)",
+      ],
+    },
+    {
+      title: "unsere zeit ~",
+      paragraphs: [
+        "auch wenn wir uns erst fast 1 jahr kennen, fühlt es sich an als kennen wir uns schon unser halbes leben lang, wo warst du denn all die zeit heaaa? 🤔",
+        "auch wenn wir uns das immer wieder gegeneinander sagen: ich bin so dankbar dich zu haben, ich bin dankbar das deine eltern dich so gut erzogen haben, ich bin dankbar das du durch deine eigenen erfahrungen dich so zu der person weiterentwickelt hast die du jetzt bist.",
+      ],
+    },
+    {
+      title: "und noch mehr dank ~",
+      paragraphs: [
+        "ich bin dankbar das du eines halloween gedacht hast: ich möchte feiern gehen! 🎉",
+        "und ich bin dankbar das du meine lucu Freundin (eigentlich Frau 😤) geworden bist.",
+        "lass dich heute von allen menschen feiern, denn du hast es dir verdient! 🎂",
+        "heute ist dein tag, und ich werde ihn auch die nächsten 70 jahre an deiner seite feiern.",
+      ],
+    },
+    {
+      title: "für immer ~",
+      paragraphs: [
+        "falling in love with you was the easiest thing i've ever done ~",
+        "Ich liebe dich, aku cinta kamu, 愛してます",
+      ],
+      signature: true,
+    },
   ];
 
-  const [page, setPage] = useState<1 | 2>(1);
+  const total = pages.length;
+  const [page, setPage] = useState(0);
   const [flipping, setFlipping] = useState(false);
+  const [dir, setDir] = useState<1 | -1>(1);
 
   const goNext = () => {
-    if (flipping || page === 2) return;
+    if (flipping || page >= total - 1) return;
+    setDir(1);
     setFlipping(true);
     setTimeout(() => {
-      setPage(2);
+      setPage((p) => p + 1);
       setFlipping(false);
     }, 850);
   };
   const goPrev = () => {
-    if (flipping || page === 1) return;
+    if (flipping || page <= 0) return;
+    setDir(-1);
     setFlipping(true);
     setTimeout(() => {
-      setPage(1);
+      setPage((p) => p - 1);
       setFlipping(false);
     }, 850);
   };
 
+  const cur = pages[page];
+  const nextPage = pages[page + dir] ?? cur;
+
   return (
-    <div className="relative mx-auto min-h-screen w-full max-w-md px-4 py-8">
+    <div
+      className="relative mx-auto min-h-screen w-full max-w-md px-4 py-8"
+      style={{
+        background:
+          "radial-gradient(ellipse at 50% 0%, rgba(201,74,91,0.35), transparent 55%), radial-gradient(ellipse at 50% 100%, rgba(90,18,32,0.55), transparent 65%), linear-gradient(180deg, #2a0a10 0%, #180509 100%)",
+      }}
+    >
       <FloatingHearts />
 
       {/* Book */}
       <div className="relative mx-auto mt-4 max-w-sm" style={{ perspective: "1600px" }}>
         <div className="relative">
-          {/* Current page */}
           <LetterPage
             key={`p${page}`}
-            title={page === 1 ? "Dear my baby," : "… für immer."}
-            lines={page === 1 ? page1 : page2}
-            showStamp={page === 1}
-            showSignature={page === 2}
+            title={cur.title}
+            lines={cur.paragraphs}
+            showSignature={cur.signature}
           />
 
-          {/* Flipping overlay page */}
           {flipping && (
             <div
               className="pointer-events-none absolute inset-0"
               style={{
                 transformStyle: "preserve-3d",
-                transformOrigin: page === 1 ? "left center" : "right center",
-                animation: `pageFlip${page} 850ms cubic-bezier(0.65,0.05,0.36,1) both`,
+                transformOrigin: dir === 1 ? "left center" : "right center",
+                animation: `pageFlip${dir === 1 ? 1 : 2} 850ms cubic-bezier(0.65,0.05,0.36,1) both`,
               }}
             >
-              <div
-                className="absolute inset-0"
-                style={{ backfaceVisibility: "hidden" }}
-              >
+              <div className="absolute inset-0" style={{ backfaceVisibility: "hidden" }}>
                 <LetterPage
-                  title={page === 1 ? "Dear my baby," : "… für immer."}
-                  lines={page === 1 ? page1 : page2}
-                  showStamp={page === 1}
-                  showSignature={page === 2}
+                  title={cur.title}
+                  lines={cur.paragraphs}
+                  showSignature={cur.signature}
                 />
               </div>
               <div
                 className="absolute inset-0"
-                style={{
-                  backfaceVisibility: "hidden",
-                  transform: "rotateY(180deg)",
-                }}
+                style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
               >
                 <LetterPage
-                  title={page === 1 ? "… für immer." : "Dear my baby,"}
-                  lines={page === 1 ? page2 : page1}
-                  showStamp={page !== 1}
-                  showSignature={page === 1}
+                  title={nextPage.title}
+                  lines={nextPage.paragraphs}
+                  showSignature={nextPage.signature}
                 />
               </div>
             </div>
@@ -695,15 +709,17 @@ function Letter({
         <div className="mt-6 flex items-center justify-between text-xs text-white/70">
           <button
             onClick={goPrev}
-            disabled={page === 1 || flipping}
+            disabled={page === 0 || flipping}
             className="rounded-full border border-white/20 bg-white/5 px-4 py-2 backdrop-blur transition disabled:opacity-30"
           >
             ← zurück
           </button>
-          <span className="font-serif italic">Seite {page} / 2</span>
+          <span className="font-serif italic">
+            Seite {page + 1} / {total}
+          </span>
           <button
             onClick={goNext}
-            disabled={page === 2 || flipping}
+            disabled={page === total - 1 || flipping}
             className="rounded-full border border-primary/40 bg-primary/20 px-4 py-2 backdrop-blur transition disabled:opacity-30"
           >
             umblättern →
@@ -711,9 +727,9 @@ function Letter({
         </div>
       </div>
 
-      <PressMeButton onPlayVideo={onPlayVideo} />
+      {page === total - 1 && <PressMeButton onPlayVideo={onPlayVideo} />}
+      {page !== total - 1 && <div className="pb-28" />}
 
-      {/* Spotify-style vinyl bottom-left */}
       <VinylWidget audioRef={audioRef} />
 
       <style>{`
@@ -735,12 +751,10 @@ function Letter({
 function LetterPage({
   title,
   lines,
-  showStamp,
   showSignature,
 }: {
   title: string;
   lines: string[];
-  showStamp?: boolean;
   showSignature?: boolean;
 }) {
   return (
@@ -753,7 +767,7 @@ function LetterPage({
         </p>
         <div className="relative mx-auto mt-3 h-px w-16 bg-[#1a1a1a]/25" />
 
-        <div className="relative mt-6 space-y-3 font-serif text-[15px] leading-relaxed text-[#232323]">
+        <div className="relative mt-6 space-y-4 font-serif text-[15px] leading-relaxed text-[#232323]">
           {lines.map((line, i) => (
             <p
               key={i}
@@ -769,7 +783,7 @@ function LetterPage({
               className="pt-4 text-right font-serif text-xl italic text-[#1a1a1a]"
               style={{ animation: `fadeUp 800ms ${lines.length * 160 + 200}ms both` }}
             >
-              dein Herz ♥
+              dein toby ❤️
             </p>
           )}
         </div>
