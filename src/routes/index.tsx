@@ -5,10 +5,10 @@ import lockBg from "../assets/lockscreen-bg.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Happy Birthday, Nabila" },
+      { title: "Happy Birthday, my love." },
       {
         name: "description",
-        content: "Eine interaktive Geburtstagskarte für Nabila.",
+        content: "for my baby",
       },
     ],
   }),
